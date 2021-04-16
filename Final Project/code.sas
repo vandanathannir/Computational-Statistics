@@ -1,0 +1,34 @@
+FILENAME housing 'downloads/housing.data';
+*Problem 2A of the homework;
+DATA housing;
+	INFILE housing;
+	*Name the variables;
+	INPUT CRIM ZN INDUS CHAS NOX RM AGE DIS RAD TAX PTRATIO B LSTAT MEDV; 
+RUN;
+PROC PRINT data=housing;
+TITLE 'Housing Data'; 
+RUN;
+
+*Problem 2B of the homework;
+DATA housing2;
+	SET housing;
+	*Removes outliers;
+    IF NOT (MEDV=50 or RM = 8.780)  THEN OUTPUT housing2;
+RUN;
+PROC PRINT data = housing2; 
+RUN;
+
+*Problem 3A of the homework;
+PROC ANOVA DATA=housing2;
+CLASS CHAS RAD;
+*MODEL MEDV = CHAS RAD CHAS*RAD;
+MODEL MEDV = CHAS|RAD;
+*MEANS MEDV/alpha=.01;
+RUN;
+*Problem 3B of the homework;
+PROC REG DATA=housing2;
+MODEL MEDV= CHAS; 
+RUN;
+PROC REG DATA=housing2;
+MODEL MEDV= RAD; 
+RUN;
